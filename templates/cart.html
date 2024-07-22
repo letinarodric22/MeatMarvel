@@ -1,0 +1,180 @@
+<title>Shopping Cart</title>
+{% extends "layout.html" %} {% block content %}
+
+<body>
+  <div class="container">
+    <h1></h1>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product Name</th>
+          <th>Product Image</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in cart %}
+        <tr id="item-{{ item.pid }}">
+          <td>{{ item.name }}</td>
+          <td>
+            <img src="{{ item.image }}" width="20%" height="20%" />
+          </td>
+          <td>
+            <div class="input-group">
+              <button
+                class="btn btn-sm btn-outline-primary"
+                type="button"
+                onclick="updateQuantity('{{ item.pid }}', 'decrement')"
+              >
+                -
+              </button>
+              <input
+                type="number"
+                class="form-control"
+                name="quantity"
+                value="{{ item.quantity }}"
+                min="1"
+                max="999"
+                readonly
+              />
+              <button
+                class="btn btn-sm btn-outline-primary"
+                type="button"
+                onclick="updateQuantity('{{ item.pid }}', 'increment')"
+              >
+                +
+              </button>
+            </div>
+          </td>
+          <td>KES {{ item.price }}</td>
+          <td style="color: green">
+            KES {{ item.price|float * item.quantity|int }}
+          </td>
+          <td>
+            <!-- Delete Button -->
+            <button
+              type="button"
+              class="btn btn-danger"
+              onclick="deleteItem('{{ item.pid }}')"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+        {% endfor %}
+        <tr>
+          <td colspan="4"><strong>Total:</strong></td>
+          <td id="total-price" style="color: rgb(0, 255, 85)">
+            <strong>KES {{ total_price }}</strong>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+    <a href="/index#py-5" class="btn btn-primary">Continue Shopping</a>
+
+    <!-- Checkout Button -->
+    <form action="{{ url_for('checkout') }}" method="post" class="d-flex justify-content-end">
+      <button type="submit" class="btn btn-success">Checkout</button>
+  </form>
+  </div>
+
+  <script>
+    function updateQuantity(pid, action) {
+        let input = document.querySelector(`input[value='${pid}']`);
+        let currentValue = parseInt(input.value);
+        if (action === 'increment') {
+            input.value = currentValue + 1;
+        } else if (action === 'decrement' && currentValue > 1) {
+            input.value = currentValue - 1;
+        }
+        // Call function to update cart on the server using AJAX
+        updateCart(pid, input.value);
+    }
+
+    function deleteItem(pid) {
+        // Call function to delete item from cart on the server using AJAX
+        deleteFromCart(pid);
+        // Remove the corresponding row from the table
+        let row = document.getElementById(`item-${pid}`);
+        if (row) {
+            row.remove();
+        }
+    }
+
+    function updateCart(pid, quantity) {
+        // Implement AJAX request to update cart on the server
+        // Send PID and new quantity to the server
+        fetch('/updatecart', {
+            method: 'POST',
+            body: JSON.stringify({ pid: pid, quantity: quantity }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to update cart');
+                }
+            })
+            .catch(error => {
+                console.error('Error updating cart:', error);
+            });
+    }
+
+    function deleteFromCart(pid) {
+        // Implement AJAX request to delete item from cart session on the server
+        fetch('/deletefromcart', {
+            method: 'POST',
+            body: JSON.stringify({ pid: pid }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to delete item from cart');
+                }
+            })
+            .catch(error => {
+                console.error('Error deleting item from cart:', error);
+            });
+    }
+
+    // Checkout function
+    function checkout() {
+        // Implement checkout functionality here
+        alert('Checkout button clicked! Implement your checkout logic here.');
+    }
+
+    // Checkout function to add items to sales
+    function checkoutAndAddToSales() {
+        // Implement AJAX request to add items from cart to sales on the server
+        fetch('/addsales', {
+            method: 'POST',
+            body: JSON.stringify({ cart: cartData }), // Assuming cartData is defined
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    // If successful, redirect to the sales page
+                    window.location.href = "/sales";
+                } else {
+                    throw new Error('Failed to checkout');
+                }
+            })
+            .catch(error => {
+                console.error('Error during checkout:', error);
+                // Handle error as needed
+                alert('Failed to checkout. Please try again later.');
+            });
+    }
+</script>
+
+</body>
+{% endblock %}

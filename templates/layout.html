@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}MeatyShop{% endblock %}</title>
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="static/images/favicon-32x32.png"
+    />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css"
+    />
+    <link rel="stylesheet" href="static/styles.css" />
+    <style>
+      body {
+        background-color: white;
+        color: black;
+        padding-top: 0px;
+        margin-bottom: 0px;
+        margin-top: 0;
+      }
+
+      nav {
+        background-color: red;
+        position: relative;
+        font-weight: bolder;
+        font-family: "Roboto", sans-serif;
+      }
+
+      ul li {
+        padding-inline-end: 20px;
+      }
+
+      ul li:hover {
+        color: green;
+      }
+
+      .custom-footer {
+        background-color: red;
+        color: white;
+        padding: 20px 20px 20px 20px;
+      }
+
+      .custom-footer h4 {
+        color: white;
+        padding: 30px;
+      }
+    </style>
+  </head>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-danger fixed-top">
+    <div class="container">
+      <!-- Logo -->
+      <h2 class="navbar-brand text-white">MeatShop</h2>
+
+      <!-- Navbar Toggler -->
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Navbar Links -->
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="#">About</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/products">Products</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="#">Contact Us</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" onclick="showLoader()" href="/cart">
+              <i class="fas fa-shopping-cart"></i><span style="color:white;">Cart</span>  {% if total_items > 0 %}
+              <sup
+                ><span class="badge badge-light rounded-circle" style="background-color: green; color:white"
+                  >{{ total_items }}</span
+                ></sup
+              >
+              {% endif %}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/adduser">Register</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/login">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white" href="/dashboard">Admin</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <body>
+    <div class="content-wrapper" style="padding-top: 70px">
+      {% block content %}{% endblock %}
+    </div>
+  </body>
+  <footer class="custom-footer bg-danger">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-3">
+          <h2 class="logo">MeatShop</h2>
+          <br />
+          <h4>About Us</h4>
+          <p>
+            Transform your meals into gourmet experiences with our premium
+            meats. Elevate your everyday cooking to extraordinary, creating
+            memorable moments with family and friends around the dining table.
+          </p>
+        </div>
+        <div class="col-md-3">
+          <h4>Contact Us</h4>
+          <p>Ndagani, Chuka-University, TharakaNithi-Kenya</p>
+          <p>Phone: +254 794368145</p>
+          <p>
+            If you have any questions or feedback, please
+            <a href="mailto:sandaiya50rodric@gmail.com">email us</a>.
+          </p>
+        </div>
+        <div class="col-md-3">
+          <h4>Opening Hours</h4>
+          <p><strong>Monday-friday:</strong> 8am-7pm</p>
+          <p><strong>Saturday:</strong> 9am-5pm</p>
+          <p><strong>Sunday:</strong> Closed</p>
+        </div>
+
+        <div id="map" class="col-md-3">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7979.512340130317!2d37.652608653359245!3d-0.3198034699732912!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1827b88d717d25fd%3A0x20fe0c9e97c88a7c!2sndagani!5e0!3m2!1sen!2ske!4v1706217817421!5m2!1sen!2ske"
+            width="100%"
+            height="422px"
+            frameborder="0"
+            style="border: 0"
+            allowfullscreen
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+    crossorigin="anonymous"
+  ></script>
+
+  <script>
+    $(document).ready(function () {
+           $('#myTable').DataTable({
+               "order": [[0, 'desc']]  // Sort the first column (ID) in descending order
+           });
+  </script>
+</html>

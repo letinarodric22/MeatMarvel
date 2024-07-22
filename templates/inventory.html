@@ -1,0 +1,263 @@
+{% extends "layout1.html"%}
+{% block content %}
+  <body>
+    <div class="row">
+      <div class="col-4"></div>
+      <!-- Button trigger modal -->
+      <div class="col-4">
+        <button
+          type="button"
+          class="btn btn-primary"
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModal"
+        >
+          + ADD NEW ITEM
+        </button>
+        <!-- Modal -->
+        <div
+          class="modal fade"
+          id="exampleModal"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">
+                  Add product
+                </h1>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <form action="/addproducts" method="POST">
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label"
+                      >Product Name</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="exampleInputPassword1"
+                      name="name"
+                    />
+                  </div>
+                  <div class="mb-3">
+                  <label for="options">Select Category:</label>
+                    <select id="category" name="category">
+                      <option value="beef">Beef</option>
+                      <option value="poultry">Poultry</option>
+                      <option value="pork">Pork</option>
+                      <option value="mutton">Mutton(Sheep)</option>
+                      <option value="chevon">Chevon(Goat)</option>
+                      <option value="fish">Fish</option>
+                      <option value="insect">Insect</option>
+                      
+                        
+                      <!-- Add more options as needed -->
+                    </select>
+                    </div>
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label"
+                      >Buying Price</label
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="exampleInputPassword1"
+                      name="buying_price"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label"
+                      >Selling Price</label
+                    >
+                    <input
+                      type="number"
+                      class="form-control"
+                      id="exampleInputPassword1"
+                      name="selling_price"
+                    />
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="exampleInputPassword1" class="form-label"
+                      >Image URL</label
+                    >
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="exampleInputPassword1"
+                      name="image_url"
+                    />
+                  </div>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4"></div>
+    </div>
+    <div class="container">
+      <table class="table" id="myTable">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>NAME</th>
+            <th>category</th>
+            <th>Buying Price</th>
+            <th>Selling Price</th>
+            <th>Edit</th>
+            <th>Delete</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in inve %}
+          <tr>
+            <td>{{ p[0] }}</td>
+            <td>{{ p[1] }}</td>
+            <td>{{ p[2] }}</td>
+            <td>{{ p[3] }}</td>
+            <td>{{ p[4] }}</td>
+            
+            <!-- edit button for products -->
+            <td>
+              <!-- Button trigger modal -->
+              <button
+                type="button"
+                class="btn btn-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#editModal{{ p[0] }}"
+              >
+                Edit product
+              </button>
+              <!-- Modal -->
+              <div
+                class="modal fade"
+                id="editModal{{ p[0] }}"
+                tabindex="-1"
+                aria-labelledby="editModalLabel{{ p[0] }}"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1
+                        class="modal-title fs-5"
+                        id="editModalLabel{{ p[0] }}"
+                      >
+                        Edit {{ p[1] }}
+                      </h1>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="/editproduct" method="POST">
+                        <div class="mb-3">
+                          <label for="name" class="form-label"></label>
+                          <input
+                            type="hidden"
+                            class="form-control"
+                            id="id"
+                            name="pid"
+                            value="{{ p[0] }}"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label for="name" class="form-label">Name</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="name"
+                            name="name"
+                            value="{{ p[1] }}"
+                          />
+                        </div>
+
+                        <div class="mb-3">
+                          <label for="name" class="form-label">Category</label>
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="name"
+                            name="category"
+                            value="{{ p[2] }}"
+                          />
+                        </div>
+                        <div class="mb-3">
+                          <label for="buying_price" class="form-label"
+                            >Buying Price</label
+                          >
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="buying_price"
+                            name="buying_price"
+                            value="{{ p[3] }}"
+                          />
+                        </div>
+
+                        <div class="mb-3">
+                          <label for="selling_price" class="form-label"
+                            >Selling Price</label
+                          >
+                          <input
+                            type="number"
+                            class="form-control"
+                            id="selling_price"
+                            name="selling_price"
+                            value="{{ p[4] }}"
+                          />
+                        </div>
+
+                        <div class="mb-3">
+                          <label for="image_url" class="form-label"
+                            >image url</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control"
+                            id="image_url"
+                            name="image_url"
+                            value="{{ p[6] }}"
+                          />
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                          Update the Product
+                        </button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+
+            <td>
+              <!-- Delete Button -->
+              <form action="/deleteproduct" method="POST">
+                <input type="hidden" name="pid" value="{{ p[0] }}" />
+                <button type="submit" class="btn btn-danger">Delete</button>
+              </form>
+            </td>
+          </tr>
+
+          {% endfor %}
+        </tbody>
+      </table>
+    
+    </div>
+  </body>
+</html>
+{% endblock %}
