@@ -3,7 +3,7 @@ import psycopg2
 # psycopg2 is a popular Python adapter for PostgreSQL that allows you to interact with PostgreSQL databases using Python code
 
 try:
-    conn = psycopg2.connect("dbname= meat user=postgres password=39457485")
+    conn = psycopg2.connect("dbname= meat user=postgres password=1234")
     cur =conn.cursor()
 except Exception as e:
     print(e)
@@ -55,7 +55,7 @@ def delete_product(id):
     
 def insert_sales(v):
     vs = str(v)
-    q = "insert into sales(pid,quantity,  created_at) "\
+    q = "insert into sales(pid,quantity,created_at) "\
         "values" + vs
     cur.execute(q)
     conn.commit()
@@ -68,7 +68,7 @@ def insert_stock(v):
     created_at_str = created_at.strftime('%Y-%m-%d %H:%M:%S')
     expiry_date_str = expiry_date.strftime('%Y-%m-%d %H:%M:%S')
     # Construct the SQL query with placeholders
-    q = "INSERT INTO stocks (pid, quantity, expiry_date, created_at) VALUES (%s, %s, %s, %s)"
+    q = "INSERT INTO stock (pid, quantity, expiry_date, created_at) VALUES (%s, %s, %s, %s)"
     # Execute the query with the provided values
     cur.execute(q, (pid, quantity, expiry_date_str, created_at_str))
     conn.commit()

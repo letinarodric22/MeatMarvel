@@ -13,8 +13,8 @@ app.secret_key = os.urandom(24)
 def hello():
     prods = fetch_data("products")
     random.shuffle(prods)
-    r_products = random.sample(prods, 7)
-    return render_template("index.html", prods=prods, r_products=r_products)
+    # r_products = random.sample(prods, 7)
+    return render_template("index.html", prods=prods)
 
 @app.route("/users")
 def students():
@@ -34,7 +34,7 @@ def register():
 def products():
     prods = fetch_data("products")
     random.shuffle(prods)
-    r_products = random.sample(prods, 7)
+    # r_products = random.sample(prods, 7)
     # Extract unique service types (categories)
     ser = {i[2] for i in prods}
     # Create a dictionary to store items grouped by category
@@ -43,7 +43,7 @@ def products():
     for item in prods:
         category = item[2]  # Assuming servicetype is at index 1
         items_by_category[category].append(item)
-    return render_template("products.html", items_by_category=items_by_category,r_products = r_products, prods=prods)
+    return render_template("products.html", items_by_category=items_by_category, prods=prods)
 
 @app.route("/inventory")
 def inventory():
@@ -173,7 +173,7 @@ def addstock():
   
 @app.route("/stock")
 def stockk():
-           stock = fetch_data("stocks")
+           stock = fetch_data("stock")
            prods= fetch_data("products")
            return render_template('stock.html', stock=stock, prods=prods)
 
