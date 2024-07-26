@@ -16,19 +16,23 @@ def hello():
     r_products = random.sample(prods, 7)
     return render_template("index.html", prods=prods,r_products=r_products)
 
+
 @app.route("/users")
 def students():
    user = fetch_data("users")
    return render_template("register.html", user = user)
+
 
 @app.route("/customers")
 def customer():
     user = fetch_data("users")
     return render_template("customers.html", renny= user)
 
+
 @app.route("/register") 
 def register():
    return render_template("register.html")
+
 
 @app.route("/products")
 def products():
@@ -45,11 +49,11 @@ def products():
         items_by_category[category].append(item)
     return render_template("products.html", items_by_category=items_by_category, r_products=r_products,prods=prods)
 
+
 @app.route("/inventory")
 def inventory():
     inve= fetch_data("products")
     return render_template("inventory.html", inve= inve)
-
 
 
 @app.route("/sales")
@@ -57,6 +61,7 @@ def sales():
        sales = fetch_data("sales")
        prods= fetch_data("products")
        return render_template('sales.html', sales=sales, prods=prods)
+
 
 @app.route("/dashboard")
 def dashboard():
@@ -76,6 +81,7 @@ def signup():
       add_user(user)
    return redirect("/register")
 
+
 @app.route('/checkout', methods=['POST'])
 def checkout():
     if 'cart' in session:
@@ -88,6 +94,7 @@ def checkout():
         return render_template('cart.html', thank_you=True)    # Redirect to the sales page or any other desired page
     else:
         return "Your cart is empty"
+
 
 @app.route('/login', methods=["POST", "GET"])
 def login():
@@ -103,6 +110,7 @@ def login():
                 return redirect('/')  # Assuming you have a route named 'dashboard'
     return render_template('login.html')
 
+
 @app.route("/addproducts", methods=["POST", "GET"])
 def addproducts():
    if request.method=="POST":
@@ -115,7 +123,7 @@ def addproducts():
       insert_product(products)
       return redirect("/inventory")
   
-  
+
 @app.route("/editproduct", methods=["POST", "GET"])
 def editproducts():
    if request.method=="POST":
@@ -136,14 +144,14 @@ def deleteproduct():
         product_id = request.form["pid"]
         delete_product(product_id)
         return redirect("/inventory")
-    
+
+
 def addsales():
     if request.method == "POST":
         pid = request.form["pid"]
         quantity = request.form["quantity"]
         sales = (pid, quantity, datetime.now())
         insert_sales(sales)
-
         # Remove the item from the cart after adding to sales
         cart = session.get('cart', [])
         for item in cart:
@@ -155,22 +163,18 @@ def addsales():
         return redirect("/sales")
   
 
-
 @app.route('/addstock', methods=["POST"])
 def addstock():
     if request.method == "POST":
         pid = request.form["pid"]
         quantity = request.form["quantity"]
-        
         # Calculate expiry date (current date + 2 days)
         expiry_date = datetime.now() + timedelta(days=2)
-
         stock = (pid, quantity, datetime.now(), expiry_date)
         insert_stock(stock)
         return redirect("/stock")
 
-  
-  
+
 @app.route("/stock")
 def stockk():
            stock = fetch_data("stock")
@@ -192,8 +196,6 @@ def bar1():
     line_graph.x_labels = name1
     line_graph.add('Sale', sale1)
     line_graph=line_graph.render_data_uri()
-    
-    
       #  bar graph for sales per product
     line_graph1 = pygal.Line()
     line_graph1.title = 'sales per month'
@@ -209,19 +211,15 @@ def bar1():
     return render_template('dashboard.html', line_graph=line_graph,line_graph1=line_graph1)
 
 
-
 @app.route('/addtocart', methods=["POST"])
 def add_to_cart():
     if 'cart' not in session:
         session['cart'] = []
-
     pid = request.form["pid"]
     quantity = int(request.form["quantity"])
-
     # Fetch product information from the database
     cur.execute("SELECT * FROM products WHERE pid = %s", (pid,))
     product = cur.fetchone()
-
     if product:
         # Check if the product is already in the cart
         product_found = False
@@ -231,7 +229,6 @@ def add_to_cart():
                 item['quantity'] += quantity
                 product_found = True
                 break
-
         if not product_found:
             # If the product is not in the cart, add it
             session['cart'].append({
@@ -241,16 +238,13 @@ def add_to_cart():
                 'price': product[3],
                 'quantity': quantity
             })
-
         # Reconstruct the entire session cart with updated item quantities
         session['cart'] = reconstruct_cart(session['cart'])
-
-        
-
         # Redirect to view_cart route
         return redirect('/#py-5')
     else:
         return "Product not found"
+
 
 def insert_sales(sale_data):
     q = "INSERT INTO sales (pid, quantity, created_at) VALUES (%s, %s, %s)"
@@ -292,7 +286,6 @@ def delete_from_cart():
     return jsonify({'success': False})
     
 
-
 @app.route('/updatecart', methods=["POST"])
 def update_cart():
     pid = request.form["pid"]
@@ -304,7 +297,6 @@ def update_cart():
             break
     return '', 204  # Return empty response with 204 status code
 
-
 @app.context_processor
 def inject_total_items():
     # Get the cart from the session
@@ -315,9 +307,7 @@ def inject_total_items():
     total_items = len(product_counts)
     return dict(total_items=total_items)
 
-
-
-    
+   
 @app.route('/cart')
 def view_cart():
     cart = session.get('cart', [])
@@ -325,8 +315,6 @@ def view_cart():
     return render_template('cart.html', cart=cart, total_price=total_price)
 
 
-
 if __name__ == '__main__':
-
     app.run(debug=True)
     

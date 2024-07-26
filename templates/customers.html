@@ -1,8 +1,8 @@
 {% extends "layout1.html" %}
- {% block content %}
-  <div class="container" style="padding:0px 100px;">
+{% block content %}
+<div class="container" style="padding:0px 100px;">
   <table id="myTable" class="display">
-    <thead> 
+    <thead>
       <tr>
         <th>Serial Number</th>
         <th>Fullname</th>
@@ -27,16 +27,16 @@
   </table>
 </div>
 
-  <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.js"></script>
 <script>
-    // Make sure to wait for the document to be ready before initializing DataTable
-    $(document).ready(function() {
-        $('#myTable').DataTable();
-    });
+  // Make sure to wait for the document to be ready before initializing DataTable
+  $(document).ready(function () {
+    $('#myTable').DataTable();
+  });
 </script>
 
-  <!-- Add your JavaScript scripts or link to external scripts here -->
+<!-- Add your JavaScript scripts or link to external scripts here -->
 </body>
 
 </html>

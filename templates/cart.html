@@ -1,6 +1,5 @@
 <title>Shopping Cart</title>
 {% extends "layout.html" %} {% block content %}
-
 <body>
   <div class="container">
     <h1></h1>
@@ -75,13 +74,11 @@
       </tbody>
     </table>
     <a href="/index#py-5" class="btn btn-primary">Continue Shopping</a>
-
     <!-- Checkout Button -->
     <form action="{{ url_for('checkout') }}" method="post" class="d-flex justify-content-end">
       <button type="submit" class="btn btn-success">Checkout</button>
   </form>
   </div>
-
   <script>
     function updateQuantity(pid, action) {
         let input = document.querySelector(`input[value='${pid}']`);

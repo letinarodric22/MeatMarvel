@@ -1,4 +1,5 @@
 {% extends "layout.html" %} {% block content %}
+
 <head>
   <style>
     .image-container {
@@ -6,29 +7,30 @@
       text-align: center;
       color: white;
     }
+
     .image {
       width: 100%;
       height: auto;
     }
+
     .img-text {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      text-align: center; /* Center-align text */
-      width: 80%; /* Adjust width as needed */
+      text-align: center;
+      /* Center-align text */
+      width: 80%;
+      /* Adjust width as needed */
     }
   </style>
 </head>
+
 <body>
   <div class="row">
     <div class="col">
       <div class="image-container">
-        <img
-          src="static/images/meat2.jpeg"
-          alt="background image"
-          class="image"
-        />
+        <img src="static/images/meat2.jpeg" alt="background image" class="image" />
         <div class="img-text">
           <h2>Your Trusted Destination for Premium Quality Meats.</h2>
           <br />
@@ -39,15 +41,11 @@
             experience is nothing short of exceptional.
           </p>
           <a href="/products">
-            <button
-              type="button"
-              class="btn btn-primary btn-lg"
-              style="
+            <button type="button" class="btn btn-primary btn-lg" style="
                 color: brown;
                 background-color: orange;
                 border-radius: 40px;
-              "
-            >
+              ">
               Explore Available Products
             </button>
           </a>
@@ -57,48 +55,45 @@
   </div>
 
   <!-- Meat Cards -->
-  
   <section class="py-5" id="py-5" style="background-color:white;">
     <div class="container">
-        <h2>Featured Products:</h2>
-        <div class="row">
-            {% for p in r_products %} <!-- Limiting to only the first 7 products -->
-            <div class="col-lg-3 mb-2">
-                <div class="card" style="height: 100%;">
-                    <img src='{{ p[5] }}' alt=" product image" class="card-img-top" style="height: 55%;">
-                    <div class="card-body">
-                        <h5 class="card-title" style="color: black;">{{ p[1] }}</h5>
-                        <p class="card-text" style="color: black;">Kshs.{{ p[4] }}</p>
-
-
-                        <form action="/addtocart" method="POST">
-                            <input type="hidden" name="pid" value="{{ p[0] }}">
-                            <div class="input-group">
-                                <button type="button" class="btn btn-sm btn-outline-primary"
-                                    onclick="decrementQuantity(this)">-</button>
-                                <input type="number" class="form-control" id="quantity{{ loop.index }}"
-                                    name="quantity" value="1" min="1" required>
-                                <button type="button" class="btn btn-sm btn-outline-primary"
-                                    onclick="incrementQuantity(this)">+</button>
-                                <button type="submit" class="btn btn-primary">Add to Cart</button>
-                            </div>
-                        </form>
-
-                    </div>
+      <h2>Featured Products:</h2>
+      <div class="row">
+        {% for p in r_products %} <!-- Limiting to only the first 7 products -->
+        <div class="col-lg-3 mb-2">
+          <div class="card" style="height: 100%;">
+            <img src='{{ p[5] }}' alt=" product image" class="card-img-top" style="height: 55%;">
+            <div class="card-body">
+              <h5 class="card-title" style="color: black;">{{ p[1] }}</h5>
+              <p class="card-text" style="color: black;">Kshs.{{ p[4] }}</p>
+              <form action="/addtocart" method="POST">
+                <input type="hidden" name="pid" value="{{ p[0] }}">
+                <div class="input-group">
+                  <button type="button" class="btn btn-sm btn-outline-primary"
+                    onclick="decrementQuantity(this)">-</button>
+                  <input type="number" class="form-control" id="quantity{{ loop.index }}" name="quantity" value="1"
+                    min="1" required>
+                  <button type="button" class="btn btn-sm btn-outline-primary"
+                    onclick="incrementQuantity(this)">+</button>
+                  <button type="submit" class="btn btn-primary">Add to Cart</button>
                 </div>
+              </form>
             </div>
-            {% endfor %}
+          </div>
         </div>
+        {% endfor %}
+      </div>
     </div>
-</section>
+  </section>
 
   <div class="container">
-    <section id="about"><h2>About Us</h2></section>
-
+    <section id="about">
+      <h2>About Us</h2>
+    </section>
     <h2>MeatShop</h2>
     <br />
     <p>
-      "Welcome to our meat emporium, where quality meets flavor in every cut.
+      Welcome to our meat emporium, where quality meets flavor in every cut.
       Step into a haven for carnivores, where prime beef, succulent pork, tender
       chicken, and more await your discerning palate. From meticulously selected
       cuts to artisanal sausages and marinated specialties, we offer a feast for
@@ -107,7 +102,7 @@
       a steak on the grill or the aroma of slow-cooked ribs, our meat shop is
       your destination for premium cuts and unparalleled taste experiences.
       Indulge in the finest meats, crafted with passion and expertise, at our
-      meat haven today."
+      meat haven today.
     </p>
   </div>
 </body>
