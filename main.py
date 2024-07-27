@@ -16,7 +16,6 @@ def hello():
     r_products = random.sample(prods, 7)
     return render_template("index.html", prods=prods,r_products=r_products)
 
-
 @app.route("/users")
 def students():
    user = fetch_data("users")
